@@ -1,0 +1,27 @@
+name: Nix Flake Validation
+on:
+  pull_request:
+    branches:
+      - dev
+    # Only run if nix files, the lockfile, or secrets change
+    paths:
+      - "**.nix"
+      - "flake.lock"
+      - "**.yml"
+      # On the one hand I never use yaml over yml
+      # On the other I'd hate to leave them out of this in the event I do need it
+      - "**.yaml"
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: https://github.com/actions/checkout@v6
+      - name: Run Prereqs
+        uses: ./.forgejo/workflows-composite/setup-nix
+        with:
+          ssh_key: ${{ secrets.PRIVATE_FLAKE_SSH_KEY }}
+          attic_token: ${{ secrets.ATTIC_TOKEN }}
+          github_token: ${{ secrets.PAT_GITHUB }}
+      - name: Verify Flake Metadata
+        run: nix flake check --accept-flake-config

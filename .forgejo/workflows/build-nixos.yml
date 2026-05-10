@@ -1,0 +1,48 @@
+---
+# Based on https://lgug2z.com/articles/building-and-privately-caching-x86-and-aarch64-nixos-systems-on-github-actions/
+# Went through many revisions to land on what's here today
+name: "build-nixos"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+    # Only run if nix files, the lockfile, or secrets change
+    paths:
+      - "**.nix"
+      - "flake.lock"
+      - "**.yml"
+      # On the one hand I never use yaml over yml
+      # On the other I'd hate to leave them out of this in the event I do need it
+      - "**.yaml"
+env:
+  # nix-fast-build common args
+  buildArgs: "-j 2 --no-nom --skip-cached --eval-workers 4 --eval-max-memory-size 4096 --attic-cache zelec-nixos-config"
+jobs:
+  build:
+    runs-on: TimeDial-ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: https://github.com/actions/checkout@v6
+      - name: Run Prereqs
+        uses: ./.forgejo/workflows-composite/setup-nix
+        with:
+          ssh_key: ${{ secrets.PRIVATE_FLAKE_SSH_KEY }}
+          attic_token: ${{ secrets.ATTIC_TOKEN }}
+          github_token: ${{ secrets.PAT_GITHUB }}
+      - name: Build Packages and upload them to attic
+        uses: https://github.com/nick-fields/retry@v4
+        with: 
+          timeout_minutes: 60
+          max_attempts: 3
+          command: |
+            # Builds packages
+            nix-fast-build ${buildArgs} --flake ./#packages
+      - name: Build Hosts and upload them to attic
+        uses: https://github.com/nick-fields/retry@v4
+        with: 
+          timeout_minutes: 60
+          max_attempts: 3
+          command: |
+            # Builds NixOS Hosts
+            nix-fast-build ${buildArgs} --flake ./#nixosConfigurations --select 'configs: builtins.mapAttrs (name: value: value.config.system.build.toplevel) configs'

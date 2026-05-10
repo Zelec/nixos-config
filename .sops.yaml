@@ -1,0 +1,89 @@
+keys:
+  - &zelec_mainkey age18x3hl7kcv7grvnhqpuz5a768n6yn6kdg5tf6hye9l0sq0tty852qpg74ek
+  - &aion_ssh age14twg7rry4eqnm6tfls5xst7r9glvfrzssr5kc90f68d8egpf8dyqmfklx5
+  - &amethyst_ssh age130suhsztk0y87ljqhu9xyn3f80kxmcwfx6kvzaxec9gsqs9n7ycswfcudr
+  - &chronos_ssh age13kz57z8sjt3w3t8u65tlxl377sawnzr6gkr28tl6ur8w3ps444uq388uac
+  - &kairos_ssh age1xxfqryq06dn3y7chnfekjhnce3jes9zx544yg5exgsr2d29f84dsr72n7l
+  - &nixos_router_ssh age1m368xy3ww8m3ldqpcvu8mz2dsuk0cf852klvazyx4k3f8lxze4mq3y00t3
+  - &ns1 age15h2mxgmc7s9scf2cqaz5jadluyhejyv4e98v9j88rtezxnyqrycsxyg6uh
+  - &ns2 age100mn4hk26whhqf4sfqej0dxdm2850ugkc72af0lyvyqsmdrywywqaxrvj3
+  - &pearl_ssh age1tnu0x3dl0taseua9d5lqqkyl85xy32j2h7gjzuw9xsupc09d3ytsn8k7vd
+  - &raspinix_ssh age1x6qrvqslzgeh746k0hvj372fh89x44j5wkhj4aw58y60fef5dy6s2f7wc9
+  - &repairusb_ssh age14qp2h60a8c7n8zt80zfqyynu4x9faqn9kfx5kprj0068wpks2umqwyulqh
+  - &timedial_ssh age19ekv8mxdmsx0cu0zla08ukz853m8zhekcldjwkyd287e2cl4wpjsp5s2zs
+  - &timewarp_ssh age1k4gycrj7vsjdyssuwc70w98nhyzh2nq8v3ppf97tt0rz073tsuyqtucphh
+  - &wsl_ssh age16gymt34cmyw8sufuz9srgkgrzvzvru892ht6yt7trav266kff93q53hu0f
+creation_rules:
+  # Default secrets
+  # Mainly password hashes
+  - path_regex: ^secrets\.(yml|yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *zelec_mainkey
+        - *aion_ssh
+        - *amethyst_ssh
+        - *chronos_ssh
+        - *kairos_ssh
+        - *nixos_router_ssh
+        - *ns1
+        - *ns2
+        - *pearl_ssh
+        - *raspinix_ssh
+        - *repairusb_ssh
+        - *timedial_ssh
+        - *timewarp_ssh
+        - *wsl_ssh
+  # Host Spesific Secrets
+  - path_regex: ^modules/nixosModules/hosts/TimeDial/secrets\.(yml|yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *zelec_mainkey
+        - *timedial_ssh
+  - path_regex: ^modules/nixosModules/hosts/Chronos/secrets\.(yml|yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *zelec_mainkey
+        - *chronos_ssh
+  - path_regex: ^modules/nixosModules/hosts/Pearl/secrets\.(yml|yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *zelec_mainkey
+        - *pearl_ssh
+  - path_regex: ^modules/nixosModules/hosts/Amethyst/secrets\.(yml|yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *zelec_mainkey
+        - *amethyst_ssh
+  # Services Secrets
+  - path_regex: ^modules/nixosModules/services/.*/secrets\.(yml|yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *zelec_mainkey
+        - *amethyst_ssh
+        - *pearl_ssh
+        - *timedial_ssh
+  # Container Secrets
+  - path_regex: ^modules/nixosModules/virtualisation/containers/.*/secrets\.(yml|yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *zelec_mainkey
+        - *aion_ssh
+        - *amethyst_ssh
+        - *chronos_ssh
+        - *kairos_ssh
+        - *nixos_router_ssh
+        - *ns1
+        - *ns2
+        - *pearl_ssh
+        - *raspinix_ssh
+        - *repairusb_ssh
+        - *timedial_ssh
+        - *timewarp_ssh
+        - *wsl_ssh
+  # Custom Package Secrets
+  - path_regex: ^modules/packages/btrbk-mass-backup/secrets\.(yml|yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *zelec_mainkey
+        - *pearl_ssh
+        - *timedial_ssh

@@ -1,0 +1,46 @@
+name: 'Setup Nix'
+description: 'Install Nix and Setup Attic Cache'
+inputs:
+  ssh_key:
+    description: 'Private SSH Key'
+    required: true
+  attic_token:
+    description: 'Attic Auth Token'
+    required: true
+  github_token:
+    description: 'Github Auth Token'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Setup SSH key for private flake access
+      uses: https://github.com/kielabokkie/ssh-key-and-known-hosts-action@v1
+      with:
+        ssh-private-key: ${{ inputs.ssh_key }}
+        ssh-host: ssh-git.tgdev.ca
+        ssh-port: 2222
+        ssh-socket: /tmp/ssh_agent_${{ github.sha }}.sock
+    - name: SSH Keyscan
+      shell: bash
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -p 2222 ssh-git.tgdev.net > ~/.ssh/known_hosts
+        chmod 700 ~/.ssh
+        chmod 600 ~/.ssh/known_hosts
+    - name: Install Nix
+      uses: https://github.com/cachix/install-nix-action@v31
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+        github_access_token: ${{ inputs.github_token }}
+        extra_nix_config: |
+          accept-flake-config = true
+          substituters = https://attic.tgdev.net/zelec-nixos-config?priority=30 https://cache.nixos.org/
+          trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= zelec-nixos-config:KqD+Mz2I+GGcubvNcAyeq0tP7pitJRedwmKPzm5vcnQ=
+    - name: Nix Tooling Setup
+      shell: bash 
+      run: |
+        echo "machine attic.tgdev.net password ${{ inputs.attic_token }}" | sudo tee /etc/nix/netrc > /dev/null
+        nix profile add nixpkgs#attic-client
+        # Needed for the --select command
+        nix profile add github:Mic92/nix-fast-build
+        attic login tgdev https://attic.tgdev.net ${{ inputs.attic_token }}
