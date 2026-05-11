@@ -40,7 +40,12 @@ runs:
       shell: bash 
       run: |
         echo "machine attic.tgdev.net password ${{ inputs.attic_token }}" | sudo tee /etc/nix/netrc > /dev/null
-        nix profile add nixpkgs#attic-client
+        nix profile add nixpkgs#attic-client nixpkgs#just
+        attic login tgdev https://attic.tgdev.net ${{ inputs.attic_token }}
+        # Build and cache in attic
+        nix build github:Mic92/nix-fast-build
+        attic push zelec-nixos-config ./result
+        rm -rf ./result
         # Needed for the --select command
         nix profile add github:Mic92/nix-fast-build
-        attic login tgdev https://attic.tgdev.net ${{ inputs.attic_token }}
+        

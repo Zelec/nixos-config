@@ -171,9 +171,10 @@
             url = cfg.url;
             tokenFile = config.sops.secrets.forgejo_runner_token.path;
             labels = [
-              "${cfg.name}-native:host"
-              "${cfg.name}-nix-container:docker://docker.tgdev.ca/public/nix-runner:latest"
-              "${cfg.name}-ubuntu-latest:docker://${cfg.runnerImageRoot}:act-latest"
+              "privileged-ubuntu-latest:docker://${cfg.runnerImageRoot}:act-latest"
+              "privileged-ubuntu-22.04:docker://${cfg.runnerImageRoot}:act-22.04"
+              "privileged-ubuntu-20.04:docker://${cfg.runnerImageRoot}:act-20.04"
+              "privileged-ubuntu-18.04:docker://${cfg.runnerImageRoot}:act-18.04"
             ];
             hostPackages = cfg.hostPackages;
             settings = {

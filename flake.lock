@@ -677,11 +677,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1777504854,
-        "narHash": "sha256-jtoKyOY9j9XMEPsNldcXv7PKDV+mVXWVaxAtlvwrYXQ=",
+        "lastModified": 1778465764,
+        "narHash": "sha256-SQbr1VOBoXeIi9AzGNKQC+5HxqwZB3LbhK+9hsjw+rA=",
         "ref": "refs/heads/main",
-        "rev": "a1b4d158b09ada71d7b7ed00dc4b6847d5cfc193",
-        "revCount": 10,
+        "rev": "e2f790fe43874b0f1b9ba6307f965869668b9a51",
+        "revCount": 11,
         "type": "git",
         "url": "ssh://git@ssh-git.tgdev.net:2222/Zelec/nixos-config-private.git"
       },

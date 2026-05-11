@@ -17,7 +17,9 @@ on:
       - "**.yaml"
 env:
   # nix-fast-build common args
-  buildArgs: "-j 2 --no-nom --skip-cached --eval-workers 4 --eval-max-memory-size 4096 --attic-cache zelec-nixos-config"
+  # Reduced workers and skipping cached to help with attic uploads
+  # Also moved Attic to it's own bespoke config
+  buildArgs: "--no-nom -j 2 --eval-workers 2"
 jobs:
   build:
     runs-on: TimeDial-ubuntu-latest
@@ -38,6 +40,8 @@ jobs:
           command: |
             # Builds packages
             nix-fast-build ${buildArgs} --flake ./#packages
+            attic push zelec-nixos-config ./result*
+            just cleanup
       - name: Build Hosts and upload them to attic
         uses: https://github.com/nick-fields/retry@v4
         with: 
@@ -46,3 +50,5 @@ jobs:
           command: |
             # Builds NixOS Hosts
             nix-fast-build ${buildArgs} --flake ./#nixosConfigurations --select 'configs: builtins.mapAttrs (name: value: value.config.system.build.toplevel) configs'
+            attic push zelec-nixos-config ./result*
+            just cleanup

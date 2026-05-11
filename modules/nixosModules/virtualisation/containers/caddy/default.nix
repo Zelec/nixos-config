@@ -268,7 +268,7 @@
       };
       virtualisation.oci-containers.containers."caddy" = {
         imageFile = self.packages.${pkgs.stdenv.hostPlatform.system}.caddy-oci-image;
-        image = "docker.tgdev.ca/zelec/caddy-tg-nix:latest";
+        image = "docker.tgdev.ca/zelec/caddy-tg-nix:nix-controlled";
         pull = "never";
         environment = {
           "TZ" = cfg.timeZone;
