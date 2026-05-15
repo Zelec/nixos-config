@@ -60,16 +60,16 @@ creation_rules:
       - age:
         - *zelec_mainkey
         - *amethyst_ssh
-        - *ns1_ssh
-        - *ns2_ssh
+        - *pearl_ssh
+        - *timedial_ssh
   # AutoUpgrade secret
   - path_regex: ^modules/nixosModules/system/autoUpgrade/secrets.(yml|yaml|json|env|ini)$
     key_groups:
       - age:
         - *zelec_mainkey
         - *amethyst_ssh
-        - *pearl_ssh
-        - *timedial_ssh
+        - *ns1_ssh
+        - *ns2_ssh
   # Container Secrets
   - path_regex: ^modules/nixosModules/virtualisation/containers/.*/secrets\.(yml|yaml|json|env|ini)$
     key_groups:
