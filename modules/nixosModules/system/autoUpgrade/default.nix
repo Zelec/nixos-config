@@ -42,6 +42,12 @@
       };
     };
     config = {
+      programs.ssh.knownHosts = {
+        "ssh-git.tgdev.net" = {
+          extraHostNames = ["[ssh-git.tgdev.net]:2222"];
+          publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC5CYM+0N17n8j0aVuNqQxVFBRc3ZmDTvVNcXsD5VbqM";
+        };
+      };
       sops.secrets."autoUpgrade/ssh-key-private" = sopsSetup;
       sops.secrets."autoUpgrade/ssh-key-public" = sopsSetup;
       system.autoUpgrade = {
@@ -59,7 +65,7 @@
         flake = "git+ssh://git@ssh-git.tgdev.net:2222/Zelec/nixos-config.git?ref=main";
       };
       systemd.services.nixos-upgrade.serviceConfig = {
-        Environment = "GIT_SSH_COMMAND=${pkgs.openssh}/bin/ssh -i ${config.sops.secrets."autoUpgrade/ssh-key-private".path} -o StrictHostKeyChecking=accept-new";
+        Environment = "GIT_SSH_COMMAND=\"${pkgs.openssh}/bin/ssh -i ${config.sops.secrets."autoUpgrade/ssh-key-private".path} -o StrictHostKeyChecking=accept-new\"";
       };
     };
   };
