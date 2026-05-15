@@ -11,7 +11,7 @@
   ...
 }: {
   flake = {
-    nixosConfigurations.Amethyst = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.Amethyst = inputs.nixpkgs-small.lib.nixosSystem {
       modules = [
         self.nixosModules.hostAmethyst
       ];
@@ -29,6 +29,8 @@
         btrfs-scrub
         forgejo-runner
         tailscale
+        # System
+        autoUpgrade
         # Virtualisation
         docker
         libvirt

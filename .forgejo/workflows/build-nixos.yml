@@ -32,23 +32,33 @@ jobs:
           ssh_key: ${{ secrets.PRIVATE_FLAKE_SSH_KEY }}
           attic_token: ${{ secrets.ATTIC_TOKEN }}
           github_token: ${{ secrets.PAT_GITHUB }}
-      - name: Build Packages and upload them to attic
+      - name: Build Packages from Flake
         uses: https://github.com/nick-fields/retry@v4
         with: 
-          timeout_minutes: 60
+          timeout_minutes: 15
           max_attempts: 3
           command: |
-            # Builds packages
             nix-fast-build ${buildArgs} --flake ./#packages
+      - name: Upload Packages to Attic and cleanup
+        uses: https://github.com/nick-fields/retry@v4
+        with: 
+          timeout_minutes: 30
+          max_attempts: 3
+          command: |
             attic push zelec-nixos-config ./result*
             just cleanup
-      - name: Build Hosts and upload them to attic
+      - name: Build NixOS Host Configs from Flake
         uses: https://github.com/nick-fields/retry@v4
         with: 
-          timeout_minutes: 60
+          timeout_minutes: 30
           max_attempts: 3
           command: |
-            # Builds NixOS Hosts
             nix-fast-build ${buildArgs} --flake ./#nixosConfigurations --select 'configs: builtins.mapAttrs (name: value: value.config.system.build.toplevel) configs'
+      - name: Upload NixOS Host Configs to Attic and cleanup
+        uses: https://github.com/nick-fields/retry@v4
+        with: 
+          timeout_minutes: 15
+          max_attempts: 3
+          command: |
             attic push zelec-nixos-config ./result*
             just cleanup

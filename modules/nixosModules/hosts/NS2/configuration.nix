@@ -4,7 +4,7 @@
   ...
 }: {
   flake = {
-    nixosConfigurations.NS2 = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.NS2 = inputs.nixpkgs-small.lib.nixosSystem {
       modules = [
         self.nixosModules.hostNS2
       ];

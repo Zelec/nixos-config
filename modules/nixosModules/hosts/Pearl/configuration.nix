@@ -10,7 +10,7 @@
   ...
 }: {
   flake = {
-    nixosConfigurations.Pearl = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.Pearl = inputs.nixpkgs-small.lib.nixosSystem {
       modules = [
         self.nixosModules.hostPearl
       ];

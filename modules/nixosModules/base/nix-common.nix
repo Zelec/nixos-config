@@ -86,9 +86,8 @@
               "zelec-nixos-config:KqD+Mz2I+GGcubvNcAyeq0tP7pitJRedwmKPzm5vcnQ="
             ];
           };
-          # Pin nixpkgs to the flake input
+          # Pin nixpkgs to the flake input for nix-shell
           nixPath = ["nixpkgs=${inputs.nixpkgs}"];
-          registry.nixpkgs.flake = inputs.nixpkgs;
           # Automatic Garbage Collection of older NixOS Generations
           gc = {
             automatic = true;

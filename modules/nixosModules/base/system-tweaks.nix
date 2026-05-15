@@ -12,14 +12,34 @@
     cfg = config.preferences.tunables;
   in {
     options.preferences.tunables = {
-      sysctlVmSwappiness = lib.mkOption {
-        type = lib.types.ints.positive;
-        default = 5;
+      sysctl = {
+        vm-swappiness = lib.mkOption {
+          type = lib.types.ints.positive;
+          default = 60;
+        };
+      };
+      systemd = {
+        oomd-enable = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+        };
       };
     };
     config = {
       boot.kernel.sysctl = {
-        "vm.swappiness" = cfg.sysctlVmSwappiness;
+        "vm.swappiness" = cfg.sysctl.vm-swappiness;
+      };
+      systemd.oomd = {
+        enable = cfg.systemd.oomd-enable;
+        enableRootSlice = true;
+        enableSystemSlice = true;
+        enableUserSlices = true;
+        settings.OOM = {
+          DefaultMemoryPressureDurationSec = "20s";
+        };
+      };
+      systemd.slices."user".sliceConfig = {
+        ManagedOOMMemoryPressureLimit = "90%";
       };
     };
   };

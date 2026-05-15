@@ -18,7 +18,8 @@
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
     fonts.packages = with pkgs; [
       font-awesome
-      nerdfonts
+      nerd-fonts.jetbrains-mono
+      dejavu_fonts
     ];
     services.gnome.gnome-keyring.enable = true;
     programs.hyprland = {

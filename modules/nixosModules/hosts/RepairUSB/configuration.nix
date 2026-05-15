@@ -64,30 +64,18 @@
       environment = {
         pathsToLink = ["/libexec"];
         systemPackages = with pkgs; [
+          caffeine-ng
           ddrescue
           glances
           gparted
-          gptfdisk
-          kdePackages.plasma-pa
           lxappearance
           magic-wormhole
-          ncdu
           nvme-cli
-          papirus-icon-theme
           pavucontrol
-          plymouth
-          source-code-pro
           tela-icon-theme
-          tmux
-          vulkan-loader
-          vulkan-tools
         ];
       };
-      programs = {
-        virt-manager.enable = true;
-      };
       security = {
-        rtkit.enable = true;
         sudo = {
           enable = true;
           extraRules = [
@@ -103,12 +91,6 @@
           ];
         };
       };
-      services = {
-        fstrim.enable = true;
-        libinput.enable = true;
-        xserver.enable = true;
-      };
-      xdg.portal.wlr.enable = true;
     };
   };
 }

@@ -22,6 +22,8 @@
       btrfs-scrub
       coredns
       tailscale
+      # System
+      autoUpgrade
     ];
     options.preferences.nameserver-common = {
       networking = {

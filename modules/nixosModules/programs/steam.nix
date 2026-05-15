@@ -2,7 +2,10 @@
   flake.nixosModules.steam = {pkgs, ...}: {
     environment.systemPackages = with pkgs; [
       pkgs.unstable.r2modman
-      lutris
+      # Disabling due to broken valkey builds on nixos-25.11
+      # https://nixpk.gs/pr-tracker.html?pr=519263
+      # https://hydra.nixos.org/eval/1825246
+      #lutris
     ];
     programs = {
       gamemode.enable = true;

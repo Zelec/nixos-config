@@ -165,7 +165,7 @@ in {
       repository = "${mountPoint}/restic-archive";
       initialize = true;
       timerConfig = {
-        OnCalendar = "*-*-* 00:13:00";
+        OnCalendar = "*-*-* 21:13:00";
       };
     };
     # Requires mount to be alive, should allow systemd to handle automount before it runs this

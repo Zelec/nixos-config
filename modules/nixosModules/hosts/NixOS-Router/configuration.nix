@@ -8,7 +8,7 @@
   ...
 }: {
   flake = {
-    nixosConfigurations.NixOS-Router = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.NixOS-Router = inputs.nixpkgs-small.lib.nixosSystem {
       modules = [
         self.nixosModules.hostNixOS-Router
       ];

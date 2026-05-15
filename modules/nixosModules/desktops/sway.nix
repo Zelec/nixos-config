@@ -21,8 +21,9 @@
     fonts.packages = with pkgs;
       [
         font-awesome
-      ]
-      ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
+        nerd-fonts.jetbrains-mono
+        dejavu_fonts
+      ];
     services.gnome.gnome-keyring.enable = true;
     programs.sway = {
       enable = true;

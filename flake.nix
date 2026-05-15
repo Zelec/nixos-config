@@ -11,6 +11,7 @@
     # Nixpkgs base
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs-small.url = "github:nixos/nixpkgs?ref=nixos-25.11-small";
     # Flake Parts for dendritic patterning
     flake-parts.url = "github:hercules-ci/flake-parts";
     # Import Tree to simplify nix file loading
@@ -35,6 +36,7 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     # Nix-VSCode-Extensions, used to manage VSCode/VSCodium extensions
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
     # NixOS Hardware, community sourced hardware recommended defaults
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     # Nix User Repo, Used by Firefox managed addons

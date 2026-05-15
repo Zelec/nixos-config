@@ -5,8 +5,8 @@ keys:
   - &chronos_ssh age13kz57z8sjt3w3t8u65tlxl377sawnzr6gkr28tl6ur8w3ps444uq388uac
   - &kairos_ssh age1xxfqryq06dn3y7chnfekjhnce3jes9zx544yg5exgsr2d29f84dsr72n7l
   - &nixos_router_ssh age1m368xy3ww8m3ldqpcvu8mz2dsuk0cf852klvazyx4k3f8lxze4mq3y00t3
-  - &ns1 age15h2mxgmc7s9scf2cqaz5jadluyhejyv4e98v9j88rtezxnyqrycsxyg6uh
-  - &ns2 age100mn4hk26whhqf4sfqej0dxdm2850ugkc72af0lyvyqsmdrywywqaxrvj3
+  - &ns1_ssh age15h2mxgmc7s9scf2cqaz5jadluyhejyv4e98v9j88rtezxnyqrycsxyg6uh
+  - &ns2_ssh age100mn4hk26whhqf4sfqej0dxdm2850ugkc72af0lyvyqsmdrywywqaxrvj3
   - &pearl_ssh age1tnu0x3dl0taseua9d5lqqkyl85xy32j2h7gjzuw9xsupc09d3ytsn8k7vd
   - &raspinix_ssh age1x6qrvqslzgeh746k0hvj372fh89x44j5wkhj4aw58y60fef5dy6s2f7wc9
   - &repairusb_ssh age14qp2h60a8c7n8zt80zfqyynu4x9faqn9kfx5kprj0068wpks2umqwyulqh
@@ -25,8 +25,8 @@ creation_rules:
         - *chronos_ssh
         - *kairos_ssh
         - *nixos_router_ssh
-        - *ns1
-        - *ns2
+        - *ns1_ssh
+        - *ns2_ssh
         - *pearl_ssh
         - *raspinix_ssh
         - *repairusb_ssh
@@ -60,6 +60,14 @@ creation_rules:
       - age:
         - *zelec_mainkey
         - *amethyst_ssh
+        - *ns1_ssh
+        - *ns2_ssh
+  # AutoUpgrade secret
+  - path_regex: ^modules/nixosModules/system/autoUpgrade/secrets.(yml|yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *zelec_mainkey
+        - *amethyst_ssh
         - *pearl_ssh
         - *timedial_ssh
   # Container Secrets
@@ -72,8 +80,8 @@ creation_rules:
         - *chronos_ssh
         - *kairos_ssh
         - *nixos_router_ssh
-        - *ns1
-        - *ns2
+        - *ns1_ssh
+        - *ns2_ssh
         - *pearl_ssh
         - *raspinix_ssh
         - *repairusb_ssh
